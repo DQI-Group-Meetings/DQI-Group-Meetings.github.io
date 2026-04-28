@@ -7,8 +7,8 @@ permalink: /archive/
 {% assign events_by_year = site.events | sort: "date" | reverse | group_by_exp: "event", "event.date | date: '%Y'" %}
 
 <header class="page-header">
-  <p class="eyebrow">Meeting logs</p>
   <h1>Archive</h1>
+  <p class="archive-subtitle">Meeting logs</p>
   <p>Browse all past and upcoming group meetings.</p>
 </header>
 
@@ -17,10 +17,21 @@ permalink: /archive/
     <h2>{{ year.name }}</h2>
     <div class="event-list">
       {% for event in year.items %}
+        {% assign event_body = event.content | strip %}
+        {% assign event_has_details = false %}
+        {% if event.files or event_body != "" %}
+          {% assign event_has_details = true %}
+        {% endif %}
         <article class="event-row">
           <time datetime="{{ event.date | date: '%Y-%m-%d' }}">{{ event.date | date: "%b %-d" }}</time>
           <div>
-            <h3><a href="{{ event.url | relative_url }}">{{ event.title }}</a></h3>
+            <h3>
+              {% if event_has_details %}
+                <a href="{{ event.url | relative_url }}">{{ event.title }}</a>
+              {% else %}
+                <span class="event-title-static">{{ event.title }}</span>
+              {% endif %}
+            </h3>
             {% if event.speaker %}
               <p>{{ event.speaker }}</p>
             {% endif %}

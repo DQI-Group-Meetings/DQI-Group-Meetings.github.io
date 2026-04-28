@@ -13,6 +13,12 @@ layout: default
         <dt>Date</dt>
         <dd>{{ page.date | date: "%B %-d, %Y" }}</dd>
       </div>
+      {% if page.room %}
+      <div>
+        <dt>Room</dt>
+        <dd>{{ page.room }}</dd>
+      </div>
+      {% endif %}
       {% if page.speaker %}
       <div>
         <dt>Speaker</dt>
@@ -35,14 +41,21 @@ layout: default
     <h2>Files</h2>
     <ul class="file-list">
       {% for file in page.files %}
-        <li><a href="{{ file.path | relative_url }}">{{ file.label }}</a></li>
+        {% if file.path contains '://' %}
+          <li><a href="{{ file.path }}">{{ file.label }}</a></li>
+        {% else %}
+          <li><a href="{{ file.path | relative_url }}">{{ file.label }}</a></li>
+        {% endif %}
       {% endfor %}
     </ul>
   </section>
   {% endif %}
 
-  <section class="content-section prose">
-    <h2>Notes</h2>
-    {{ content }}
-  </section>
+  {% assign stripped_content = content | strip %}
+  {% if stripped_content != "" %}
+    <section class="content-section prose">
+      <h2>Notes</h2>
+      {{ content }}
+    </section>
+  {% endif %}
 </article>

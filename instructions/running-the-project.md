@@ -161,6 +161,7 @@ Each event file starts with YAML front matter, followed by the meeting notes. Ex
 title: Tensor Networks Discussion
 date: 2026-05-06
 speaker: Alice Smith
+room: 2A1
 tags:
   - tensor networks
   - numerics
@@ -173,6 +174,12 @@ Short summary of the meeting goes here.
 ```
 
 The front matter is machine-readable metadata. The text after the second `---` is the human-readable body of the meeting page.
+
+The `room` field is optional. When present, it appears in the event header together with the date and speaker.
+
+The `tags` field should describe the scientific topic, not the event status. Good tags are domain labels such as `dual-unitary circuits`, `spectral statistics`, `quantum thermodynamics`, `quantum information`, `quantum many-body physics`, `integrability`, and `quantum hydrodynamics`.
+
+Calendar, upcoming-event, and archive entries link to the event page only when the event has detail content. Detail content means at least one `files` item or non-empty notes below the front matter. Events with only front matter still appear in lists, but their titles are plain text instead of links.
 
 ### `_layouts/`
 
@@ -199,6 +206,10 @@ This file powers the interactive calendar.
 
 The homepage writes event data into `window.DQI_EVENTS`. The JavaScript reads that data, renders the current month, and updates the calendar when the previous, next, or today buttons are clicked.
 
+Events without files or body notes are rendered as non-clickable calendar labels. Clickable calendar labels use a royal-blue pill style; non-clickable calendar labels are plain text with no background.
+
+The homepage also includes a Google Calendar subscription notice. The public `.ics` file lives at `assets/files/calendar/dqi-group-meetings.ics`.
+
 ## Adding a New Meeting
 
 Create a new file in `_events/`.
@@ -222,6 +233,7 @@ Add front matter:
 title: Meeting Title
 date: 2026-06-03
 speaker: Jane Doe
+room: 2A1
 tags:
   - topic one
   - topic two
@@ -265,6 +277,43 @@ files:
 ```
 
 Use paths that start with `/assets/...`. Jekyll's `relative_url` filter will combine those paths with the configured `baseurl`.
+
+External file links are also supported:
+
+```yaml
+files:
+  - label: Presentation link
+    path: https://example.com/slides
+```
+
+## Importing a Meeting Backlog
+
+When importing old meetings from an external backlog, use a cautious workflow so mistakes are easy to revert.
+
+Start with one meeting entry:
+
+1. Create one Markdown file in `_events/`.
+2. Copy only that meeting's files into `assets/files/YYYY-MM-DD/`.
+3. Run the site locally and check the event page, archive, calendar, and file links.
+4. Review the Git diff before importing more rows.
+
+For each imported meeting, keep the same normal event structure:
+
+```yaml
+---
+title: "Meeting topic"
+date: 2025-03-03
+speaker: "Speaker Name"
+room: "2A1"
+tags:
+  - quantum information
+files:
+  - label: "Presentation"
+    path: "/assets/files/2025-03-03/slides.pdf"
+---
+```
+
+Do not use `past`, `future`, or `backlog` as tags. Tags should describe the scientific content. Put the meeting room in the `room` front matter field. The topic should appear in the `title`, so do not duplicate it in the body.
 
 ## Publishing With GitHub Pages
 
@@ -360,3 +409,19 @@ git push
 ```
 
 After pushing, check the GitHub Actions tab or GitHub Pages settings to confirm the site rebuilt successfully.
+
+## Keeping Documentation Updated
+
+This repository has two kinds of project documentation:
+
+- `AGENTS.md` is short context for future AI coding agents.
+- `instructions/running-the-project.md` is the human-facing guide for maintainers and people who fork the project.
+
+When changing a global feature, architecture, deployment behavior, content convention, or other important project behavior, update the documentation in the same change.
+
+Use this rule of thumb:
+
+- If a future AI agent needs to know it to work correctly, update `AGENTS.md`.
+- If a human maintainer or someone forking the project needs to know it, update this guide.
+
+Good documentation updates are concrete. Prefer exact file paths, commands, URLs, and short explanations over vague notes.

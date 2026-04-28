@@ -6,6 +6,8 @@
   --line: #d9e2ec;
   --accent: #16697a;
   --accent-soft: #e7f4f6;
+  --calendar-link: rgb(65 105 225 / 82%);
+  --calendar-link-hover: rgb(65 105 225 / 95%);
 }
 
 * {
@@ -71,11 +73,61 @@ a:hover {
 }
 
 .intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
-  gap: 32px;
-  align-items: end;
+  display: block;
   margin-bottom: 20px;
+}
+
+.intro h1,
+.page-header h1 {
+  color: #4169e1;
+}
+
+.archive-subtitle {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.intro-copy {
+  max-width: 720px;
+  margin-top: 16px;
+}
+
+.calendar-link-note {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 18px 20px;
+  border: 1px solid #c8d4f8;
+  border-radius: 8px;
+  color: #26345f;
+  background: #eef3ff;
+}
+
+.calendar-link-note p {
+  margin: 0;
+}
+
+.calendar-link-note a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.calendar-link-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  border-radius: 999px;
+  color: #fff;
+  background: #4169e1;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .panel,
@@ -206,9 +258,31 @@ button:hover {
   margin-top: 6px;
   padding: 6px 8px;
   border-radius: 6px;
-  background: var(--accent-soft);
   font-size: 0.85rem;
   line-height: 1.25;
+}
+
+a.calendar-event {
+  color: #fff;
+  background: var(--calendar-link);
+}
+
+a.calendar-event:hover {
+  background: var(--calendar-link-hover);
+}
+
+.calendar-event.is-static {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.calendar-event strong {
+  font-weight: 700;
+}
+
+.event-title-static {
+  color: var(--text);
 }
 
 .event-list {

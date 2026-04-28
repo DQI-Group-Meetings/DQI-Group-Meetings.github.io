@@ -14,21 +14,43 @@ title: Calendar
 {% endfor %}
 
 <section class="intro">
-  <div>
-    <p class="eyebrow">DQI group meetings</p>
-    <h1>Calendar and meeting log</h1>
+  <div class="intro-heading">
+    <h1>DQI Group Meetings</h1>
   </div>
   <div class="intro-copy">
     {% include general-info.md %}
   </div>
 </section>
 
+<section class="calendar-link-note" aria-label="Google Calendar link">
+  <span class="calendar-link-icon" aria-hidden="true">!</span>
+  <p>
+    <strong>Google Calendar Link:</strong> You can also use
+    <a href="https://calendar.google.com/calendar/u/0?cid=Nzc3NjcyZmJhMzJjZTlmNTBmMDhmMTMyZjIyMTZiZGMwMzc0ZTg4NzJhZmNmZGM4MDZmZDE3NDgzOWNhN2NhM0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t">this google calendar link</a>.
+    By doing so you should be able to receive a reminder the day before the event
+    (and another one 30 minutes before it). Click
+    <a href="{{ '/assets/files/calendar/dqi-group-meetings.ics' | relative_url }}">here</a>
+    for the .ics version.
+  </p>
+</section>
+
 <section class="panel calendar-panel">
   <h2>Upcoming Event</h2>
   {% if upcoming_event %}
+    {% assign upcoming_body = upcoming_event.content | strip %}
+    {% assign upcoming_has_details = false %}
+    {% if upcoming_event.files or upcoming_body != "" %}
+      {% assign upcoming_has_details = true %}
+    {% endif %}
     <article class="featured-event">
       <time datetime="{{ upcoming_event.date | date: '%Y-%m-%d' }}">{{ upcoming_event.date | date: "%B %-d, %Y" }}</time>
-      <h3><a href="{{ upcoming_event.url | relative_url }}">{{ upcoming_event.title }}</a></h3>
+      <h3>
+        {% if upcoming_has_details %}
+          <a href="{{ upcoming_event.url | relative_url }}">{{ upcoming_event.title }}</a>
+        {% else %}
+          <span class="event-title-static">{{ upcoming_event.title }}</span>
+        {% endif %}
+      </h3>
       {% if upcoming_event.speaker %}
         <p>{{ upcoming_event.speaker }}</p>
       {% endif %}
@@ -63,11 +85,16 @@ title: Calendar
 <script>
   window.DQI_EVENTS = [
     {% for event in sorted_events %}
+      {% assign event_body = event.content | strip %}
+      {% assign event_has_details = false %}
+      {% if event.files or event_body != "" %}
+        {% assign event_has_details = true %}
+      {% endif %}
       {
         title: {{ event.title | jsonify }},
         speaker: {{ event.speaker | default: "" | jsonify }},
         date: "{{ event.date | date: '%Y-%m-%d' }}",
-        url: "{{ event.url | relative_url }}"
+        url: {% if event_has_details %}"{{ event.url | relative_url }}"{% else %}null{% endif %}
       }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   ];

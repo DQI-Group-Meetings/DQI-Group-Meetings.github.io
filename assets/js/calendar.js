@@ -56,11 +56,20 @@
       cell.appendChild(number);
 
       dayEvents.forEach((event) => {
-        const link = document.createElement("a");
-        link.className = "calendar-event";
-        link.href = event.url;
-        link.textContent = event.speaker ? `${event.speaker}: ${event.title}` : event.title;
-        cell.appendChild(link);
+        const eventElement = document.createElement(event.url ? "a" : "span");
+        eventElement.className = event.url ? "calendar-event" : "calendar-event is-static";
+        if (event.url) {
+          eventElement.href = event.url;
+        }
+        if (event.speaker) {
+          const speaker = document.createElement("strong");
+          speaker.textContent = `${event.speaker}: `;
+          eventElement.appendChild(speaker);
+          eventElement.append(event.title);
+        } else {
+          eventElement.textContent = event.title;
+        }
+        cell.appendChild(eventElement);
       });
 
       days.appendChild(cell);
