@@ -99,4 +99,4 @@ title: Calendar
     {% endfor %}
   ];
 </script>
-<script src="{{ '/assets/js/calendar.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/calendar.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

@@ -210,6 +210,8 @@ Events without files or body notes are rendered as non-clickable calendar labels
 
 The homepage also includes a Google Calendar subscription notice. The public `.ics` file lives at `assets/files/calendar/dqi-group-meetings.ics`.
 
+The CSS and calendar JavaScript links include a build-time `?v=...` query string. This helps browsers and GitHub Pages caches load the latest styles and scripts after a deployment.
+
 ## Adding a New Meeting
 
 Create a new file in `_events/`.

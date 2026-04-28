@@ -41,3 +41,4 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 - Imported meeting rooms are stored in event front matter as `room` and rendered in the event header under the date.
 - Calendar, upcoming-event, and archive entries are clickable only when the event has associated detail content: at least one `files` item or non-empty Markdown body notes. Events with only front matter render as plain text in lists. In the calendar, clickable entries use a royal-blue pill style and non-clickable entries render as plain text with no background.
 - The homepage includes a Google Calendar subscription notice. The local `.ics` file is served from `assets/files/calendar/dqi-group-meetings.ics`.
+- CSS and calendar JavaScript asset URLs include a `?v={{ site.time | date: '%s' }}` cache-busting query string so GitHub Pages/browser caches pick up visual changes after each build.
