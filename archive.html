@@ -1,0 +1,39 @@
+---
+layout: default
+title: Archive
+permalink: /archive/
+---
+
+{% assign events_by_year = site.events | sort: "date" | reverse | group_by_exp: "event", "event.date | date: '%Y'" %}
+
+<header class="page-header">
+  <p class="eyebrow">Meeting logs</p>
+  <h1>Archive</h1>
+  <p>Browse all past and upcoming group meetings.</p>
+</header>
+
+{% for year in events_by_year %}
+  <section class="archive-year">
+    <h2>{{ year.name }}</h2>
+    <div class="event-list">
+      {% for event in year.items %}
+        <article class="event-row">
+          <time datetime="{{ event.date | date: '%Y-%m-%d' }}">{{ event.date | date: "%b %-d" }}</time>
+          <div>
+            <h3><a href="{{ event.url | relative_url }}">{{ event.title }}</a></h3>
+            {% if event.speaker %}
+              <p>{{ event.speaker }}</p>
+            {% endif %}
+            {% if event.tags %}
+              <div class="tag-row">
+                {% for tag in event.tags %}
+                  <span class="tag">{{ tag }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+{% endfor %}

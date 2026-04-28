@@ -1,0 +1,75 @@
+---
+layout: default
+title: Calendar
+---
+
+{% assign today = site.time | date: "%Y-%m-%d" %}
+{% assign sorted_events = site.events | sort: "date" %}
+{% assign upcoming_event = nil %}
+{% for event in sorted_events %}
+  {% assign event_date = event.date | date: "%Y-%m-%d" %}
+  {% if event_date >= today and upcoming_event == nil %}
+    {% assign upcoming_event = event %}
+  {% endif %}
+{% endfor %}
+
+<section class="intro">
+  <div>
+    <p class="eyebrow">DQI group meetings</p>
+    <h1>Calendar and meeting log</h1>
+  </div>
+  <div class="intro-copy">
+    {% include general-info.md %}
+  </div>
+</section>
+
+<section class="panel calendar-panel">
+  <h2>Upcoming Event</h2>
+  {% if upcoming_event %}
+    <article class="featured-event">
+      <time datetime="{{ upcoming_event.date | date: '%Y-%m-%d' }}">{{ upcoming_event.date | date: "%B %-d, %Y" }}</time>
+      <h3><a href="{{ upcoming_event.url | relative_url }}">{{ upcoming_event.title }}</a></h3>
+      {% if upcoming_event.speaker %}
+        <p>{{ upcoming_event.speaker }}</p>
+      {% endif %}
+    </article>
+  {% else %}
+    <p>No upcoming events are listed yet.</p>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <div class="calendar-header">
+    <h2 id="calendar-title">Calendar</h2>
+    <div class="calendar-actions">
+      <button type="button" id="prev-month" aria-label="Previous month">&lt;</button>
+      <button type="button" id="today-month">Today</button>
+      <button type="button" id="next-month" aria-label="Next month">&gt;</button>
+    </div>
+  </div>
+
+  <div class="calendar-grid weekday-row" aria-hidden="true">
+    <span>Mon</span>
+    <span>Tue</span>
+    <span>Wed</span>
+    <span>Thu</span>
+    <span>Fri</span>
+    <span>Sat</span>
+    <span>Sun</span>
+  </div>
+  <div class="calendar-grid" id="calendar-days"></div>
+</section>
+
+<script>
+  window.DQI_EVENTS = [
+    {% for event in sorted_events %}
+      {
+        title: {{ event.title | jsonify }},
+        speaker: {{ event.speaker | default: "" | jsonify }},
+        date: "{{ event.date | date: '%Y-%m-%d' }}",
+        url: "{{ event.url | relative_url }}"
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+</script>
+<script src="{{ '/assets/js/calendar.js' | relative_url }}"></script>

@@ -1,0 +1,17 @@
+title: DQI Group Meetings
+description: Calendar and archive for DQI group meetings.
+baseurl: "/DQI-group-meetings"
+url: "https://alves-gabriel.github.io"
+future: true
+
+collections:
+  events:
+    output: true
+    permalink: /events/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: events
+    values:
+      layout: event

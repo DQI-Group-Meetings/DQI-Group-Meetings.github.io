@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav" aria-label="Main navigation">
+      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <div class="nav-links">
+        <a href="{{ '/' | relative_url }}">Calendar</a>
+        <a href="{{ '/archive/' | relative_url }}">Archive</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    {{ content }}
+  </main>
+</body>
+</html>

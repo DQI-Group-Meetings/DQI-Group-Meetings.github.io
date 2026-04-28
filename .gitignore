@@ -1,0 +1,5 @@
+.codex
+_site/
+.jekyll-cache/
+.sass-cache/
+.project-notes/
