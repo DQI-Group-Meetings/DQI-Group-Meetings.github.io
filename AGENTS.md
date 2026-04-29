@@ -41,6 +41,7 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 - Imported meeting rooms are stored in event front matter as `room` and rendered in the event header under the date.
 - Calendar, next-meetings, and archive entries are clickable only when the event has associated detail content: at least one `files` item or non-empty Markdown body notes. Events with only front matter render as plain text in lists. In the calendar, clickable entries use a royal-blue pill style and non-clickable entries render as plain text with no background.
 - The homepage shows up to three next meetings. Optional `time` and `room` fields are shown only for the immediate next meeting. Optional `additional_notes` is shown for any next-meetings item that has it.
+- The archive page includes client-side filters for text search, status, and year. Search covers titles, speakers, and tags. Filter behavior lives in `assets/js/archive-filters.js` and uses `data-*` attributes rendered by `archive.html`.
 - The homepage includes a Google Calendar subscription notice that links to the external Google Calendar.
-- CSS and calendar JavaScript asset URLs include a `?v={{ site.time | date: '%s' }}` cache-busting query string so GitHub Pages/browser caches pick up visual changes after each build.
+- CSS, calendar JavaScript, and archive filter JavaScript asset URLs include a `?v={{ site.time | date: '%s' }}` cache-busting query string so GitHub Pages/browser caches pick up visual changes after each build.
 - Event content can be validated locally with `ruby scripts/validate_events.rb`. The script checks required front matter, filename/date consistency, optional tag/time formatting, missing local file attachments, and missing rooms on future events.

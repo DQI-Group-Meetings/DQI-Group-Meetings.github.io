@@ -17,18 +17,66 @@ permalink: /archive/
   <span><span class="legend-swatch is-past" aria-hidden="true"></span>Past events</span>
 </div>
 
+<section class="archive-filters" aria-label="Archive filters">
+  <label>
+    Search
+    <input type="search" id="archive-search" placeholder="Title, speaker, tag">
+  </label>
+  <label>
+    Status
+    <select id="archive-status">
+      <option value="">All</option>
+      <option value="upcoming">Upcoming</option>
+      <option value="past">Past events</option>
+    </select>
+  </label>
+  <label>
+    Year
+    <select id="archive-year">
+      <option value="">All</option>
+    </select>
+  </label>
+  <button type="button" id="archive-reset">Reset</button>
+</section>
+
+<p class="archive-empty" id="archive-empty" hidden>No matching events.</p>
+
 {% for year in events_by_year %}
-  <section class="archive-year">
+  <section class="archive-year" data-year-section="{{ year.name }}">
     <h2>{{ year.name }}</h2>
     <div class="event-list">
       {% for event in year.items %}
         {% assign event_date = event.date | date: "%Y-%m-%d" %}
+        {% assign event_year = event.date | date: "%Y" %}
+        {% assign event_status = "past" %}
+        {% if event_date >= today %}
+          {% assign event_status = "upcoming" %}
+        {% endif %}
+        {% assign tag_search = "" %}
+        {% assign tag_filter = "" %}
+        {% if event.tags %}
+          {% assign tag_search = event.tags | join: " " %}
+          {% assign tag_filter = event.tags | join: "|" %}
+        {% endif %}
+        {% capture event_search %}
+          {{ event.date | date: "%Y-%m-%d" }}
+          {{ event.title }}
+          {{ event.speaker }}
+          {{ tag_search }}
+        {% endcapture %}
         {% assign event_body = event.content | strip %}
         {% assign event_has_details = false %}
         {% if event.files or event_body != "" %}
           {% assign event_has_details = true %}
         {% endif %}
-        <article class="event-row{% if event_date >= today %} is-upcoming{% endif %}">
+        <article
+          class="event-row{% if event_status == 'upcoming' %} is-upcoming{% endif %}"
+          data-year="{{ event_year | escape }}"
+          data-status="{{ event_status }}"
+          data-speaker="{{ event.speaker | default: '' | escape }}"
+          data-tags="{{ tag_filter | escape }}"
+          data-search="{{ event_search | strip | normalize_whitespace | downcase | escape }}"
+        >
           <time datetime="{{ event.date | date: '%Y-%m-%d' }}">{{ event.date | date: "%b %-d" }}</time>
           <div>
             <h3>
@@ -54,3 +102,5 @@ permalink: /archive/
     </div>
   </section>
 {% endfor %}
+
+<script src="{{ '/assets/js/archive-filters.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

@@ -170,6 +170,8 @@ This page lists all meetings grouped by year.
 
 It uses the same `_events/` data, but presents it as a browsable archive instead of a calendar.
 
+The archive also includes client-side filters for text search, status, and year. Search covers titles, speakers, and tags. Jekyll renders `data-*` attributes on each archive row, and `assets/js/archive-filters.js` reads those attributes to show or hide matching events in the browser.
+
 ### `_events/`
 
 This folder contains one Markdown file per meeting.
@@ -248,7 +250,11 @@ Events without files or body notes are rendered as non-clickable calendar labels
 
 The homepage also includes a Google Calendar subscription notice that links to the external Google Calendar.
 
-The CSS and calendar JavaScript links include a build-time `?v=...` query string. This helps browsers and GitHub Pages caches load the latest styles and scripts after a deployment.
+The CSS, calendar JavaScript, and archive filter JavaScript links include a build-time `?v=...` query string. This helps browsers and GitHub Pages caches load the latest styles and scripts after a deployment.
+
+### `assets/js/archive-filters.js`
+
+This file powers the archive filters. It populates the year dropdown from the rendered archive rows, applies search and select filters, hides empty year sections, and shows a "No matching events" message when every event is filtered out.
 
 ## Adding a New Meeting
 

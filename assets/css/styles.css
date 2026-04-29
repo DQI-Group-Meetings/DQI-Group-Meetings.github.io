@@ -123,6 +123,53 @@ a:hover {
   background: var(--panel);
 }
 
+.archive-filters {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(140px, 180px) minmax(120px, 160px) auto;
+  gap: 12px;
+  align-items: end;
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.archive-filters label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.archive-filters input,
+.archive-filters select {
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0 10px;
+  color: var(--text);
+  background: #fff;
+  font: inherit;
+}
+
+.archive-filters input:focus,
+.archive-filters select:focus {
+  outline: 2px solid #c8d4f8;
+  outline-offset: 1px;
+}
+
+.archive-empty {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: var(--panel);
+}
+
 .intro-copy {
   max-width: 720px;
   margin-top: 16px;
@@ -375,6 +422,12 @@ a.calendar-event:hover {
   color: var(--upcoming);
 }
 
+.event-row[hidden],
+.archive-year[hidden],
+.archive-empty[hidden] {
+  display: none;
+}
+
 .event-meta {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -431,6 +484,7 @@ a.calendar-event:hover {
   .site-nav,
   .intro,
   .calendar-header,
+  .archive-filters,
   .next-meeting,
   .event-row,
   .event-meta {
