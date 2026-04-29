@@ -98,6 +98,26 @@ bundle exec jekyll build
 
 Jekyll writes the generated website into `_site/`. You usually do not edit `_site/` directly. Treat it as generated output.
 
+## Validating Meeting Content
+
+Run the event validation script before committing meeting changes:
+
+```bash
+ruby scripts/validate_events.rb
+```
+
+The script checks:
+
+- Every event has `title`, `date`, and `speaker`.
+- The date in the filename matches the `date` field in front matter.
+- If `tags` is present, it is written as a YAML list.
+- If `time` is present, it uses 24-hour `HH:MM` format.
+- If `additional_notes` is present, it is written as a string.
+- Local file links in `files.path` point to files that exist under `assets/`.
+- Future events have a `room` value.
+
+If the script reports issues, fix the listed event files and run it again.
+
 ## Project Architecture
 
 The important files and folders are:
@@ -139,7 +159,7 @@ This is the homepage.
 It shows:
 
 - The site intro.
-- The next upcoming event.
+- The next upcoming meetings.
 - The interactive calendar.
 
 The page uses Liquid code to read all events from `site.events`, sort them by date, and pass event data into JavaScript.
@@ -162,6 +182,8 @@ title: Tensor Networks Discussion
 date: 2026-05-06
 speaker: Alice Smith
 room: 2A1
+time: "12:00"
+additional_notes: "sample text here"
 tags:
   - tensor networks
   - numerics
@@ -177,9 +199,25 @@ The front matter is machine-readable metadata. The text after the second `---` i
 
 The `room` field is optional. When present, it appears in the event header together with the date and speaker.
 
-The `tags` field should describe the scientific topic, not the event status. Good tags are domain labels such as `dual-unitary circuits`, `spectral statistics`, `quantum thermodynamics`, `quantum information`, `quantum many-body physics`, `integrability`, and `quantum hydrodynamics`.
+The `time` field is optional. Use 24-hour `HH:MM` format, wrapped in quotes:
 
-Calendar, upcoming-event, and archive entries link to the event page only when the event has detail content. Detail content means at least one `files` item or non-empty notes below the front matter. Events with only front matter still appear in lists, but their titles are plain text instead of links.
+```yaml
+time: "12:00"
+```
+
+When present, `time` appears in the homepage Next Meetings panel for the immediate next meeting only.
+
+The `additional_notes` field is optional. Use it for short scheduling notes in the homepage Next Meetings panel:
+
+```yaml
+additional_notes: "Bring printed notes."
+```
+
+When present, `additional_notes` appears as `Notes: ...` for any event listed in the Next Meetings panel.
+
+The `tags` field is optional. When present, prefer scientific topic labels such as `dual-unitary circuits`, `spectral statistics`, `quantum thermodynamics`, `quantum information`, `quantum many-body physics`, `integrability`, and `quantum hydrodynamics`.
+
+Calendar, next-meetings, and archive entries link to the event page only when the event has detail content. Detail content means at least one `files` item or non-empty notes below the front matter. Events with only front matter still appear in lists, but their titles are plain text instead of links.
 
 ### `_layouts/`
 
@@ -208,7 +246,7 @@ The homepage writes event data into `window.DQI_EVENTS`. The JavaScript reads th
 
 Events without files or body notes are rendered as non-clickable calendar labels. Clickable calendar labels use a royal-blue pill style; non-clickable calendar labels are plain text with no background.
 
-The homepage also includes a Google Calendar subscription notice. The public `.ics` file lives at `assets/files/calendar/dqi-group-meetings.ics`.
+The homepage also includes a Google Calendar subscription notice that links to the external Google Calendar.
 
 The CSS and calendar JavaScript links include a build-time `?v=...` query string. This helps browsers and GitHub Pages caches load the latest styles and scripts after a deployment.
 
@@ -236,6 +274,8 @@ title: Meeting Title
 date: 2026-06-03
 speaker: Jane Doe
 room: 2A1
+time: "12:00"
+additional_notes: "sample text here"
 tags:
   - topic one
   - topic two
@@ -307,6 +347,8 @@ title: "Meeting topic"
 date: 2025-03-03
 speaker: "Speaker Name"
 room: "2A1"
+time: "12:00"
+additional_notes: "sample text here"
 tags:
   - quantum information
 files:
@@ -315,7 +357,7 @@ files:
 ---
 ```
 
-Do not use `past`, `future`, or `backlog` as tags. Tags should describe the scientific content. Put the meeting room in the `room` front matter field. The topic should appear in the `title`, so do not duplicate it in the body.
+Tags should usually describe the scientific content. Put the meeting room in the `room` front matter field. The topic should appear in the `title`, so do not duplicate it in the body.
 
 ## Publishing With GitHub Pages
 

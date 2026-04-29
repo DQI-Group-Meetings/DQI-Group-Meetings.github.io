@@ -5,13 +5,6 @@ title: Calendar
 
 {% assign today = site.time | date: "%Y-%m-%d" %}
 {% assign sorted_events = site.events | sort: "date" %}
-{% assign upcoming_event = nil %}
-{% for event in sorted_events %}
-  {% assign event_date = event.date | date: "%Y-%m-%d" %}
-  {% if event_date >= today and upcoming_event == nil %}
-    {% assign upcoming_event = event %}
-  {% endif %}
-{% endfor %}
 
 <section class="intro">
   <div class="intro-heading">
@@ -28,37 +21,53 @@ title: Calendar
     <strong>Google Calendar Link:</strong> You can also use
     <a href="https://calendar.google.com/calendar/u/0?cid=Nzc3NjcyZmJhMzJjZTlmNTBmMDhmMTMyZjIyMTZiZGMwMzc0ZTg4NzJhZmNmZGM4MDZmZDE3NDgzOWNhN2NhM0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t">this google calendar link</a>.
     By doing so you should be able to receive a reminder the day before the event
-    (and another one 30 minutes before it). Click
-    <a href="{{ '/assets/files/calendar/dqi-group-meetings.ics' | relative_url }}">here</a>
-    for the .ics version.
+    (and another one 30 minutes before it).
   </p>
 </section>
 
 <section class="panel calendar-panel">
-  <h2>Upcoming Event</h2>
-  {% if upcoming_event %}
-    {% assign upcoming_body = upcoming_event.content | strip %}
-    {% assign upcoming_has_details = false %}
-    {% if upcoming_event.files or upcoming_body != "" %}
-      {% assign upcoming_has_details = true %}
-    {% endif %}
-    <article class="featured-event">
-      <time datetime="{{ upcoming_event.date | date: '%Y-%m-%d' }}">{{ upcoming_event.date | date: "%B %-d, %Y" }}</time>
-      <h3>
-        {% if upcoming_has_details %}
-          <a href="{{ upcoming_event.url | relative_url }}">{{ upcoming_event.title }}</a>
-        {% else %}
-          <span class="event-title-static">{{ upcoming_event.title }}</span>
+  <h2>Next Meetings</h2>
+  {% assign upcoming_count = 0 %}
+  <div class="next-meetings">
+    {% for event in sorted_events %}
+      {% assign event_date = event.date | date: "%Y-%m-%d" %}
+      {% if event_date >= today and upcoming_count < 3 %}
+        {% assign event_body = event.content | strip %}
+        {% assign event_has_details = false %}
+        {% if event.files or event_body != "" %}
+          {% assign event_has_details = true %}
         {% endif %}
-      </h3>
-      {% if upcoming_event.speaker %}
-        <p>{{ upcoming_event.speaker }}</p>
+        <article class="next-meeting{% if upcoming_count == 0 %} is-immediate{% endif %}">
+          <time datetime="{{ event.date | date: '%Y-%m-%d' }}">{{ event.date | date: "%B %-d, %Y" }}</time>
+          <div>
+            <h3>
+              {% if event_has_details %}
+                <a href="{{ event.url | relative_url }}">{{ event.title }}</a>
+              {% else %}
+                <span class="event-title-static">{{ event.title }}</span>
+              {% endif %}
+            </h3>
+            {% if event.speaker %}
+              <p>{{ event.speaker }}</p>
+            {% endif %}
+            {% if upcoming_count == 0 %}
+              {% if event.time %}
+                <p><strong>Time:</strong> {{ event.time }}</p>
+              {% endif %}
+              {% if event.room %}
+                <p><strong>Room:</strong> {{ event.room }}</p>
+              {% endif %}
+            {% endif %}
+            {% if event.additional_notes %}
+              <p><strong>Notes:</strong> {{ event.additional_notes }}</p>
+            {% endif %}
+          </div>
+        </article>
+        {% assign upcoming_count = upcoming_count | plus: 1 %}
       {% endif %}
-      {% if upcoming_event.room %}
-        <p><strong>Room:</strong> {{ upcoming_event.room }}</p>
-      {% endif %}
-    </article>
-  {% else %}
+    {% endfor %}
+  </div>
+  {% if upcoming_count == 0 %}
     <p>No upcoming events are listed yet.</p>
   {% endif %}
 </section>
