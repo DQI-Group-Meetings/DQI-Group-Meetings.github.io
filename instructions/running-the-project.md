@@ -48,8 +48,8 @@ gem install bundler
 Clone the repository:
 
 ```bash
-git clone https://github.com/alves-gabriel/DQI-group-meetings.git
-cd DQI-group-meetings
+git clone https://github.com/DQI-Group-Meetings/DQI-Group-Meetings.github.io.git
+cd DQI-Group-Meetings.github.io
 ```
 
 Install the Ruby dependencies:
@@ -71,22 +71,22 @@ bundle exec jekyll serve
 Then open this URL in your browser:
 
 ```text
-http://localhost:4000/DQI-group-meetings/
+http://localhost:4000/
 ```
 
-The `/DQI-group-meetings/` part matters because `_config.yml` sets:
+The site is served from the root path because `_config.yml` sets:
 
 ```yaml
-baseurl: "/DQI-group-meetings"
+baseurl: ""
 ```
 
-That setting matches the GitHub Pages project URL:
+That setting matches the GitHub Pages organization site URL:
 
 ```text
-https://alves-gabriel.github.io/DQI-group-meetings/
+https://dqi-group-meetings.github.io/
 ```
 
-If you fork this repository and rename it, you will probably need to update `baseurl` in `_config.yml`.
+If you fork this repository as a project site instead of an organization root site, you will probably need to update `baseurl` in `_config.yml`.
 
 ## Building Without Serving
 
@@ -367,7 +367,34 @@ Tags should usually describe the scientific content. Put the meeting room in the
 
 ## Publishing With GitHub Pages
 
-This repository is designed to publish through GitHub Pages.
+This repository is designed to publish through GitHub Pages as an organization website.
+
+The GitHub organization is:
+
+```text
+DQI-Group-Meetings
+```
+
+An organization is a shared GitHub owner. Instead of the repository belonging to one personal account, it belongs to the organization. People can be added to the organization or to this repository as collaborators so they can update the website.
+
+The repository is:
+
+```text
+DQI-Group-Meetings/DQI-Group-Meetings.github.io
+```
+
+The repository name matters. A GitHub Pages repository named `ORGANIZATION.github.io` publishes at the root organization URL:
+
+```text
+https://dqi-group-meetings.github.io/
+```
+
+Because this is a root organization site, `_config.yml` uses an empty `baseurl`:
+
+```yaml
+url: "https://dqi-group-meetings.github.io"
+baseurl: ""
+```
 
 For this repository, GitHub Pages should be configured as:
 
@@ -375,25 +402,67 @@ For this repository, GitHub Pages should be configured as:
 - Branch: `main`
 - Folder: `/ (root)`
 
-After pushing to `main`, GitHub Pages builds and publishes the site.
-
-The expected public URL is:
+After pushing to `main`, GitHub Pages builds and publishes the site at:
 
 ```text
-https://alves-gabriel.github.io/DQI-group-meetings/
+https://dqi-group-meetings.github.io/
 ```
 
-If you fork the project, your URL will usually look like:
+## Updating the Website Repository
+
+To update the website, edit the files in this repository, test locally, commit, and push to `main`.
+
+For example:
+
+```bash
+git pull
+bundle exec jekyll serve
+```
+
+Open the local site:
 
 ```text
-https://YOUR-GITHUB-USERNAME.github.io/YOUR-REPOSITORY-NAME/
+http://localhost:4000/
 ```
 
-In that case, update `_config.yml`:
+After editing meeting files or site files, validate and build:
+
+```bash
+ruby scripts/validate_events.rb
+bundle exec jekyll build
+```
+
+Then commit and push:
+
+```bash
+git status
+git add .
+git commit -m "Describe the update"
+git push
+```
+
+After the push, GitHub Pages will rebuild the public website automatically. If the site does not update immediately, check the repository's Actions tab or Pages settings for the latest build status.
+
+## Forking or Reusing the Project
+
+If someone forks this project under a personal account or a different organization, their URL may look like a project site:
+
+```text
+https://OWNER.github.io/REPOSITORY-NAME/
+```
+
+In that case, update `_config.yml` to match the new owner and repository path:
 
 ```yaml
-url: "https://YOUR-GITHUB-USERNAME.github.io"
-baseurl: "/YOUR-REPOSITORY-NAME"
+url: "https://OWNER.github.io"
+baseurl: "/REPOSITORY-NAME"
+```
+
+If the fork is also renamed to `OWNER.github.io`, then it is a root user or organization site and `baseurl` should be empty:
+
+```yaml
+url: "https://OWNER.github.io"
+baseurl: ""
 ```
 
 Then configure GitHub Pages in the fork's repository settings.
@@ -409,17 +478,17 @@ Check:
 - The branch is `main`.
 - The folder is `/ (root)`.
 - The latest Pages build passed in the repository's Actions tab.
-- The URL includes the repository name, for example `/DQI-group-meetings/`.
+- The URL is the organization root URL, `https://dqi-group-meetings.github.io/`.
 
 ### The local homepage loads without styling
 
-Use the full local URL:
+Use the root local URL:
 
 ```text
-http://localhost:4000/DQI-group-meetings/
+http://localhost:4000/
 ```
 
-If you open `http://localhost:4000/` directly, links may not match the configured `baseurl`.
+If you changed `baseurl` for a fork, use the matching local URL for that `baseurl`.
 
 ### A future event does not show up
 

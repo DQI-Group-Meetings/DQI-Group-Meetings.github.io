@@ -5,10 +5,10 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 ## Site
 
 - The site is deployed with GitHub Pages from the `main` branch and `/ (root)`.
-- Expected public URL: `https://alves-gabriel.github.io/DQI-group-meetings/`.
+- Expected public URL: `https://dqi-group-meetings.github.io/`.
 - `_config.yml` sets:
-  - `url: "https://alves-gabriel.github.io"`
-  - `baseurl: "/DQI-group-meetings"`
+  - `url: "https://dqi-group-meetings.github.io"`
+  - `baseurl: ""`
   - `future: true`
 
 ## Content Model
