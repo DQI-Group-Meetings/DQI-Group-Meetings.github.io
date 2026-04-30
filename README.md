@@ -22,17 +22,28 @@ Static Jekyll site for browsing DQI group meeting logs.
    additional_notes: "sample text here"
    tags:
      - topic
+   thumbnail:
+     path: /assets/thumbnails/2026-05-06/thumbnail.png
+     alt: Short description of the figure
    files:
      - label: Slides
        path: /assets/files/2026-05-06/slides.pdf
    ---
    ```
 
-3. Put PDFs or slides in `assets/files/YYYY-MM-DD/`.
+3. Put PDFs and slides in `assets/files/YYYY-MM-DD/`.
 
-4. Write the meeting notes below the front matter.
+4. Put optional custom-picked thumbnails in `assets/thumbnails/YYYY-MM-DD/`.
 
-5. Check that the entries are valid:
+5. If a thumbnail is present, add its attribution note below the front matter using this template:
+
+   ```markdown
+   Thumbnail adapted from [Reference label](https://example.com/reference).
+   ```
+
+6. Write any other meeting notes below the front matter.
+
+7. Check that the entries are valid:
 
    ```bash
    ruby scripts/validate_events.rb

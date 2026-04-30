@@ -38,7 +38,10 @@ title: Calendar
           {% assign event_has_details = true %}
         {% endif %}
         <article class="next-meeting{% if upcoming_count == 0 %} is-immediate{% endif %}">
-          <time datetime="{{ event.date | date: '%Y-%m-%d' }}">{{ event.date | date: "%B %-d, %Y" }}</time>
+          <div class="event-media">
+            <time datetime="{{ event.date | date: '%Y-%m-%d' }}">{{ event.date | date: "%B %-d, %Y" }}</time>
+            {% include event-thumbnail.html event=event %}
+          </div>
           <div>
             <h3>
               {% if event_has_details %}

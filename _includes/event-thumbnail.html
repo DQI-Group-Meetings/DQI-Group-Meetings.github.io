@@ -1,0 +1,13 @@
+{% assign thumbnail = include.event.thumbnail %}
+{% assign thumbnail_path = thumbnail.path | default: thumbnail %}
+{% assign thumbnail_alt = thumbnail.alt | default: include.event.title %}
+
+<figure class="event-thumbnail{% unless thumbnail_path %} is-placeholder{% endunless %}" aria-hidden="{% if thumbnail_path %}false{% else %}true{% endif %}">
+  {% if thumbnail_path %}
+    {% if thumbnail_path contains '://' %}
+      <img src="{{ thumbnail_path }}" alt="{{ thumbnail_alt | escape }}" loading="lazy">
+    {% else %}
+      <img src="{{ thumbnail_path | relative_url }}" alt="{{ thumbnail_alt | escape }}" loading="lazy">
+    {% endif %}
+  {% endif %}
+</figure>

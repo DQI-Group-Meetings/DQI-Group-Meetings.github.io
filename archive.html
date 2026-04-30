@@ -77,7 +77,10 @@ permalink: /archive/
           data-tags="{{ tag_filter | escape }}"
           data-search="{{ event_search | strip | normalize_whitespace | downcase | escape }}"
         >
-          <time datetime="{{ event.date | date: '%Y-%m-%d' }}">{{ event.date | date: "%b %-d" }}</time>
+          <div class="event-media">
+            <time datetime="{{ event.date | date: '%Y-%m-%d' }}">{{ event.date | date: "%b %-d" }}</time>
+            {% include event-thumbnail.html event=event %}
+          </div>
           <div>
             <h3>
               {% if event_has_details %}

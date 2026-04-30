@@ -15,10 +15,17 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 
 - Meeting entries live in `_events/`.
 - Event files use names like `_events/YYYY-MM-DD-speaker-name.md`.
-- Event front matter includes `title`, `date`, `speaker`, optional `time`, optional `additional_notes`, optional `tags`, optional `room`, and optional `files`.
+- Event front matter includes `title`, `date`, `speaker`, optional `time`, optional `additional_notes`, optional `tags`, optional `room`, optional `thumbnail`, and optional `files`.
 - Tags are optional. When present, prefer physics/QI topic labels over event status labels.
 - Use domain tags such as `dual-unitary circuits`, `spectral statistics`, `quantum thermodynamics`, `quantum information`, `quantum many-body physics`, `integrability`, `quantum hydrodynamics`, and related topic labels when appropriate.
-- Slides, notes, and related assets should go under `assets/files/YYYY-MM-DD/`.
+- Slides, notes, and related event attachments should go under `assets/files/YYYY-MM-DD/`.
+- Custom-picked event thumbnails should go under `assets/thumbnails/YYYY-MM-DD/`.
+- When adding a thumbnail, add front matter in this shape:
+  `thumbnail: { path: "/assets/thumbnails/YYYY-MM-DD/name.ext", alt: "Short figure description" }`
+- When adding a thumbnail, always add this attribution sentence in the event Markdown body, replacing the link label and URL as needed:
+  `Thumbnail adapted from [Reference label](https://example.com/reference).`
+- For arXiv sources, use a compact label such as:
+  `Thumbnail adapted from [arXiv:2604.13027](https://arxiv.org/abs/2604.13027).`
 - `files.path` may be either a local `/assets/...` path or an absolute external URL.
 - `_includes/general-info.md` contains the short homepage/site description.
 - Backlog imports should be done cautiously: start with one event entry and one attachment, verify the site, then batch-convert the rest only after the sample looks correct.
@@ -46,4 +53,4 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 - The shared header displays a non-linked Trinity College Dublin SVG logo from `assets/img/trinity-college-dublin-logo.svg` next to the site title.
 - The browser tab icon uses `assets/img/site-thumbnail.svg`.
 - CSS, calendar JavaScript, and archive filter JavaScript asset URLs include a `?v={{ site.time | date: '%s' }}` cache-busting query string so GitHub Pages/browser caches pick up visual changes after each build.
-- Event content can be validated locally with `ruby scripts/validate_events.rb`. The script checks required front matter, filename/date consistency, optional tag/time formatting, missing local file attachments, and missing rooms on future events.
+- Event content can be validated locally with `ruby scripts/validate_events.rb`. The script checks required front matter, filename/date consistency, optional tag/time formatting, missing local file attachments, missing local thumbnails, and missing rooms on future events.

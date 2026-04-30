@@ -24,6 +24,10 @@ def blank?(value)
   value.nil? || (value.respond_to?(:empty?) && value.empty?)
 end
 
+def local_file_exists?(path)
+  File.file?(File.join(ROOT, path.to_s.sub(%r{\A/}, "")))
+end
+
 issues = []
 today = Date.today
 event_paths = Dir.glob(File.join(EVENTS_DIR, "*.md")).sort
@@ -79,6 +83,12 @@ event_paths.each do |path|
 
   if event_date && event_date >= today && blank?(data["room"])
     add_issue(issues, relative_path, "future event is missing `room`")
+  end
+
+  thumbnail = data["thumbnail"]
+  thumbnail_path = thumbnail.is_a?(Hash) ? thumbnail["path"] : thumbnail
+  if !blank?(thumbnail_path) && !thumbnail_path.to_s.include?("://") && !local_file_exists?(thumbnail_path)
+    add_issue(issues, relative_path, "local thumbnail file does not exist: `#{thumbnail_path}`")
   end
 
   files = data["files"]

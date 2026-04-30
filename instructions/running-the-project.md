@@ -114,6 +114,7 @@ The script checks:
 - If `time` is present, it uses 24-hour `HH:MM` format.
 - If `additional_notes` is present, it is written as a string.
 - Local file links in `files.path` point to files that exist under `assets/`.
+- If `thumbnail` is present and points to a local file, that file exists.
 - Future events have a `room` value.
 
 If the script reports issues, fix the listed event files and run it again.
@@ -131,6 +132,7 @@ The important files and folders are:
 |-- _layouts/
 |-- _includes/
 |-- assets/
+|   |-- thumbnails/
 |   |-- css/
 |   `-- js/
 |-- Gemfile
@@ -178,7 +180,7 @@ This folder contains one Markdown file per meeting.
 
 Each event file starts with YAML front matter, followed by the meeting notes. Example:
 
-```yaml
+```text
 ---
 title: Tensor Networks Discussion
 date: 2026-05-06
@@ -189,12 +191,17 @@ additional_notes: "sample text here"
 tags:
   - tensor networks
   - numerics
+thumbnail:
+  path: /assets/thumbnails/2026-05-06/thumbnail.png
+  alt: Tensor network diagram
 files:
   - label: Slides
     path: /assets/files/2026-05-06/slides.pdf
 ---
 
 Short summary of the meeting goes here.
+
+Thumbnail adapted from [Reference label](https://example.com/reference).
 ```
 
 The front matter is machine-readable metadata. The text after the second `---` is the human-readable body of the meeting page.
@@ -216,6 +223,34 @@ additional_notes: "Bring printed notes."
 ```
 
 When present, `additional_notes` appears as `Notes: ...` for any event listed in the Next Meetings panel.
+
+The `thumbnail` field is optional. Use it for a custom-picked small figure beside the event in list views and near the top of the event page:
+
+```yaml
+thumbnail:
+  path: /assets/thumbnails/2026-05-06/thumbnail.png
+  alt: Short description of the figure
+```
+
+A path string is also supported:
+
+```yaml
+thumbnail: /assets/thumbnails/2026-05-06/thumbnail.png
+```
+
+Store custom-picked local thumbnails under `assets/thumbnails/YYYY-MM-DD/`. Keep slides, PDFs, and other event attachments under `assets/files/YYYY-MM-DD/`.
+
+When a thumbnail is present, add its source note below the front matter using this exact template:
+
+```markdown
+Thumbnail adapted from [Reference label](https://example.com/reference).
+```
+
+For arXiv sources, use a compact label such as:
+
+```markdown
+Thumbnail adapted from [arXiv:2604.13027](https://arxiv.org/abs/2604.13027).
+```
 
 The `tags` field is optional. When present, prefer scientific topic labels such as `dual-unitary circuits`, `spectral statistics`, `quantum thermodynamics`, `quantum information`, `quantum many-body physics`, `integrability`, and `quantum hydrodynamics`.
 
