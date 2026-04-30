@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-labelledby="title desc">
+  <title id="title">Nested sets in a quantum resource theory</title>
+  <desc id="desc">Three thick, slightly offset concentric contours representing nested sets of quantum states in a resource theory.</desc>
+  <rect width="900" height="560" fill="#fff"/>
+  <g transform="translate(450 280)" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="0" cy="-8" rx="330" ry="205" fill="#eef3ff" stroke="#4169e1" stroke-width="9"/>
+    <ellipse cx="0" cy="8" rx="236" ry="145" fill="#e7f4f6" stroke="#16697a" stroke-width="9"/>
+    <ellipse cx="0" cy="20" rx="126" ry="78" fill="#e9f6ef" stroke="#287d4f" stroke-width="9"/>
+  </g>
+</svg>

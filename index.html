@@ -7,8 +7,9 @@ title: Calendar
 {% assign sorted_events = site.events | sort: "date" %}
 
 <section class="intro">
+  <img class="desktop-circuit-decoration" src="{{ '/assets/img/circuit-site.svg' | relative_url }}" alt="" aria-hidden="true">
   <div class="intro-heading">
-    <h1>DQI Group Meetings</h1>
+    <h1>Group meetings</h1>
   </div>
   <div class="intro-copy">
     {% include general-info.md %}
@@ -40,7 +41,9 @@ title: Calendar
         <article class="next-meeting{% if upcoming_count == 0 %} is-immediate{% endif %}">
           <div class="event-media">
             <time datetime="{{ event.date | date: '%Y-%m-%d' }}">{{ event.date | date: "%B %-d, %Y" }}</time>
-            {% include event-thumbnail.html event=event %}
+            {% if upcoming_count == 0 %}
+              {% include event-thumbnail.html event=event %}
+            {% endif %}
           </div>
           <div>
             <h3>
@@ -76,8 +79,9 @@ title: Calendar
 </section>
 
 <section class="panel">
+  <p class="section-title">Calendar</p>
   <div class="calendar-header">
-    <h2 id="calendar-title">Calendar</h2>
+    <h2 id="calendar-title">Meeting Dates</h2>
     <div class="calendar-actions">
       <button type="button" id="prev-month" aria-label="Previous month">&lt;</button>
       <button type="button" id="today-month">Today</button>
@@ -85,16 +89,7 @@ title: Calendar
     </div>
   </div>
 
-  <div class="calendar-grid weekday-row" aria-hidden="true">
-    <span>Mon</span>
-    <span>Tue</span>
-    <span>Wed</span>
-    <span>Thu</span>
-    <span>Fri</span>
-    <span>Sat</span>
-    <span>Sun</span>
-  </div>
-  <div class="calendar-grid" id="calendar-days"></div>
+  <div class="calendar-strip" id="calendar-days"></div>
 </section>
 
 <script>

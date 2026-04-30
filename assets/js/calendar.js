@@ -22,11 +22,27 @@
     return events.filter((event) => event.date === dateKey);
   }
 
+  function eventsForMonth() {
+    return events.filter((event) => {
+      const eventDate = new Date(`${event.date}T00:00:00`);
+      return eventDate.getFullYear() === visibleYear && eventDate.getMonth() === visibleMonth;
+    });
+  }
+
+  function appendEventContent(eventElement, event) {
+    if (event.speaker) {
+      const speaker = document.createElement("strong");
+      speaker.textContent = event.speaker;
+      eventElement.appendChild(speaker);
+      eventElement.append(event.title);
+    } else {
+      eventElement.textContent = event.title;
+    }
+  }
+
   function renderCalendar() {
     const monthStart = new Date(visibleYear, visibleMonth, 1);
-    const monthEnd = new Date(visibleYear, visibleMonth + 1, 0);
-    const leadingDays = (monthStart.getDay() + 6) % 7;
-    const totalCells = Math.ceil((leadingDays + monthEnd.getDate()) / 7) * 7;
+    const monthEvents = eventsForMonth();
 
     title.textContent = monthStart.toLocaleDateString(undefined, {
       month: "long",
@@ -34,26 +50,43 @@
     });
     days.innerHTML = "";
 
-    for (let index = 0; index < totalCells; index += 1) {
-      const dayNumber = index - leadingDays + 1;
-      const date = new Date(visibleYear, visibleMonth, dayNumber);
-      const dateKey = sameDateKey(date);
-      const dayEvents = eventsForDate(dateKey);
-      const cell = document.createElement("div");
-      cell.className = "calendar-day";
+    if (monthEvents.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "calendar-empty";
+      empty.textContent = "No meetings listed for this month.";
+      days.appendChild(empty);
+      return;
+    }
 
-      if (date.getMonth() !== visibleMonth) {
-        cell.classList.add("is-muted");
-      }
+    const monthDateKeys = [...new Set(monthEvents.map((event) => event.date))];
+
+    monthDateKeys.forEach((dateKey) => {
+      const date = new Date(`${dateKey}T00:00:00`);
+      const dayEvents = eventsForDate(dateKey);
+      const item = document.createElement("article");
+      item.className = "calendar-strip-item";
 
       if (dateKey === sameDateKey(now)) {
-        cell.classList.add("is-today");
+        item.classList.add("is-today");
       }
 
-      const number = document.createElement("span");
-      number.className = "day-number";
-      number.textContent = date.getDate();
-      cell.appendChild(number);
+      const dateBlock = document.createElement("time");
+      dateBlock.className = "calendar-strip-date";
+      dateBlock.dateTime = dateKey;
+
+      const weekday = document.createElement("span");
+      weekday.className = "calendar-strip-weekday";
+      weekday.textContent = date.toLocaleDateString(undefined, { weekday: "short" });
+
+      const day = document.createElement("span");
+      day.className = "calendar-strip-day";
+      day.textContent = date.getDate();
+
+      dateBlock.append(weekday, day);
+      item.appendChild(dateBlock);
+
+      const eventList = document.createElement("div");
+      eventList.className = "calendar-strip-events";
 
       dayEvents.forEach((event) => {
         const eventElement = document.createElement(event.url ? "a" : "span");
@@ -61,19 +94,13 @@
         if (event.url) {
           eventElement.href = event.url;
         }
-        if (event.speaker) {
-          const speaker = document.createElement("strong");
-          speaker.textContent = `${event.speaker}: `;
-          eventElement.appendChild(speaker);
-          eventElement.append(event.title);
-        } else {
-          eventElement.textContent = event.title;
-        }
-        cell.appendChild(eventElement);
+        appendEventContent(eventElement, event);
+        eventList.appendChild(eventElement);
       });
 
-      days.appendChild(cell);
-    }
+      item.appendChild(eventList);
+      days.appendChild(item);
+    });
   }
 
   prev.addEventListener("click", () => {

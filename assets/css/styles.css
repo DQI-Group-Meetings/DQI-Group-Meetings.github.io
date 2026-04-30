@@ -68,9 +68,14 @@ a:hover {
 }
 
 .page {
+  position: relative;
   max-width: 1040px;
   margin: 0 auto;
   padding: 32px 24px 56px;
+}
+
+.desktop-circuit-decoration {
+  display: none;
 }
 
 .intro,
@@ -84,8 +89,23 @@ a:hover {
 }
 
 .intro {
+  position: relative;
   display: block;
   margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.page-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-heading,
+.intro-copy,
+.page-header h1,
+.archive-subtitle {
+  position: relative;
+  z-index: 1;
 }
 
 .intro h1,
@@ -234,6 +254,14 @@ a:hover {
   text-transform: uppercase;
 }
 
+.section-title {
+  margin-bottom: 10px;
+  color: #4169e1;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
 h1,
 h2,
 h3,
@@ -290,63 +318,63 @@ button:hover {
   border-color: var(--accent);
 }
 
-.calendar-grid {
+.calendar-strip {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.weekday-row {
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.weekday-row span {
-  padding: 8px;
-}
-
-.calendar-day {
-  min-height: 112px;
-  padding: 8px;
-  border-top: 1px solid var(--line);
-  border-left: 1px solid var(--line);
+.calendar-strip-item {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
   background: #fff;
 }
 
-.calendar-day:nth-child(7n) {
-  border-right: 1px solid var(--line);
+.calendar-strip-item.is-today {
+  border-color: var(--accent);
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 
-.calendar-day:nth-last-child(-n + 7) {
-  border-bottom: 1px solid var(--line);
+.calendar-strip-date {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  min-height: 64px;
+  border-radius: 6px;
+  color: var(--text);
+  background: var(--accent-soft);
 }
 
-.calendar-day.is-muted {
-  background: #f1f4f8;
+.calendar-strip-weekday {
   color: var(--muted);
-}
-
-.calendar-day.is-today .day-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  color: #fff;
-  background: var(--accent);
-}
-
-.day-number {
-  display: block;
-  margin-bottom: 8px;
+  font-size: 0.78rem;
   font-weight: 700;
+  text-transform: uppercase;
+}
+
+.calendar-strip-day {
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.calendar-strip-events {
+  display: grid;
+  gap: 8px;
+  align-content: center;
+}
+
+.calendar-empty {
+  margin: 0;
+  color: var(--muted);
 }
 
 .calendar-event {
   display: block;
-  margin-top: 6px;
   padding: 6px 8px;
   border-radius: 6px;
   font-size: 0.85rem;
@@ -369,6 +397,7 @@ a.calendar-event:hover {
 }
 
 .calendar-event strong {
+  display: block;
   font-weight: 700;
 }
 
@@ -553,11 +582,29 @@ a.calendar-event:hover {
     grid-template-columns: 1fr;
   }
 
-  .calendar-grid {
-    min-width: 720px;
+  .calendar-strip-item {
+    grid-template-columns: 1fr;
   }
 }
 
 .calendar-panel {
   overflow-x: auto;
+}
+
+@media (min-width: 1120px) {
+  .desktop-circuit-decoration {
+    display: block;
+    position: absolute;
+    z-index: 0;
+    top: 12px;
+    right: 12px;
+    width: 254px;
+    height: auto;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .archive-decoration {
+    opacity: 0.5;
+  }
 }

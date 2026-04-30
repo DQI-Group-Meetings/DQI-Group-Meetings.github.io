@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 575" role="img" aria-labelledby="title desc">
+  <title id="title">Quantum circuit diagram for high-dimensional absolutely maximally entangled states</title>
+  <desc id="desc">Eight labeled qudits connected by dark circuit lines, with four shaded two-qudit gate regions and corner labels A, B, C, and D.</desc>
+  <rect width="760" height="575" fill="#fff"/>
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#000">
+    <rect x="13" y="8" width="89" height="86" fill="#efc9ed"/>
+    <text x="44" y="66" font-size="44">A</text>
+    <rect x="658" y="9" width="89" height="86" fill="#efc9ed"/>
+    <text x="688" y="66" font-size="44">B</text>
+    <rect x="670" y="485" width="89" height="85" fill="#efc9ed"/>
+    <text x="700" y="543" font-size="44">C</text>
+    <rect x="3" y="480" width="89" height="87" fill="#efc9ed"/>
+    <text x="31" y="538" font-size="44">D</text>
+    <text x="39" y="158" font-size="39">Q1</text>
+    <text x="124" y="51" font-size="39">Q2</text>
+    <text x="553" y="63" font-size="39">Q3</text>
+    <text x="638" y="166" font-size="39">Q4</text>
+    <text x="640" y="412" font-size="39">Q5</text>
+    <text x="566" y="533" font-size="39">Q6</text>
+    <text x="110" y="549" font-size="39">Q7</text>
+    <text x="23" y="421" font-size="39">Q8</text>
+  </g>
+  <g fill="#efc9ed" stroke="#082866" stroke-width="4">
+    <ellipse cx="205" cy="147" rx="55" ry="110" transform="rotate(45 205 147)"/>
+    <ellipse cx="546" cy="147" rx="55" ry="110" transform="rotate(-45 546 147)"/>
+    <ellipse cx="205" cy="452" rx="55" ry="110" transform="rotate(-45 205 452)"/>
+    <ellipse cx="546" cy="452" rx="55" ry="110" transform="rotate(45 546 452)"/>
+  </g>
+  <g stroke="#082866" stroke-width="4" stroke-linecap="round" fill="none">
+    <path d="M236 116H514"/>
+    <path d="M172 178H576"/>
+    <path d="M236 116V484"/>
+    <path d="M514 116V484"/>
+    <path d="M172 178L576 421"/>
+    <path d="M172 421L576 178"/>
+    <path d="M172 421L514 484"/>
+    <path d="M236 484L576 421"/>
+  </g>
+  <g fill="#7f35a9" stroke="#000" stroke-width="3">
+    <circle cx="236" cy="116" r="22"/>
+    <circle cx="172" cy="178" r="22"/>
+    <circle cx="514" cy="116" r="22"/>
+    <circle cx="576" cy="178" r="22"/>
+    <circle cx="576" cy="421" r="22"/>
+    <circle cx="514" cy="484" r="22"/>
+    <circle cx="236" cy="484" r="22"/>
+    <circle cx="172" cy="421" r="22"/>
+  </g>
+</svg>

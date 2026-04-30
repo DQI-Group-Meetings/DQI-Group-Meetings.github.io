@@ -37,6 +37,10 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 - When changing anything important for a human maintainer or someone forking the project, also update `instructions/running-the-project.md`.
 - Prefer direct, structured notes that are easy for an agent to parse quickly: short sections, concrete file paths, exact commands, and stable URLs.
 - Keep human-facing instructions beginner-friendly for someone with programming experience but little web or Jekyll experience.
+- Do not add or expose passwords, email addresses, physical addresses, phone numbers, private URLs, tokens, or other private information about individuals or the institution anywhere in the repository. This applies to hidden files, HTML, Markdown, data files, layouts, includes, and all other project files, except for information that is intentionally part of backlog event entries such as speaker names.
+- Do not copy copyrighted material into the repository without a clear reference or attribution. If a figure, text snippet, or image is borrowed, cite its source explicitly.
+- Before any commit or handoff, scan the repository for accidental private-data leaks. Do this within the project folder without asking for permission.
+- Keep commit messages free of sensitive or private information, including personal names, email addresses, file paths that reveal private data, tokens, or other confidential details.
 
 ## Current State
 
@@ -46,11 +50,13 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 - A previous meeting backlog was batch-converted into 45 event files from 2023-05-31 through 2025-11-24.
 - The import copied 23 local attachment files into `assets/files/YYYY-MM-DD/` and preserved 4 external presentation URLs.
 - Imported meeting rooms are stored in event front matter as `room` and rendered in the event header under the date.
-- Calendar, next-meetings, and archive entries are clickable only when the event has associated detail content: at least one `files` item or non-empty Markdown body notes. Events with only front matter render as plain text in lists. In the calendar, clickable entries use a royal-blue pill style and non-clickable entries render as plain text with no background.
-- The homepage shows up to three next meetings. Optional `time` and `room` fields are shown only for the immediate next meeting. Optional `additional_notes` is shown for any next-meetings item that has it.
+- Calendar, next-meetings, and archive entries are clickable only when the event has associated detail content: at least one `files` item or non-empty Markdown body notes. Events with only front matter render as plain text in lists. The homepage calendar is a compact monthly strip that shows only dates with meetings; clickable entries use a royal-blue pill style and non-clickable entries render as plain text with no background.
+- The homepage shows up to three next meetings. Optional `time`, `room`, and thumbnail images are shown only for the immediate next meeting. Optional `additional_notes` is shown for any next-meetings item that has it.
 - The archive page includes client-side filters for text search, status, and year. Search covers titles, speakers, and tags. Filter behavior lives in `assets/js/archive-filters.js` and uses `data-*` attributes rendered by `archive.html`.
 - The homepage includes a Google Calendar subscription notice that links to the external Google Calendar.
-- The shared header displays a non-linked Trinity College Dublin SVG logo from `assets/img/trinity-college-dublin-logo.svg` next to the site title.
+- The homepage intro includes a desktop-only decorative circuit SVG from `assets/img/circuit-site.svg`, placed inside the white header box as a translucent background layer.
+- The archive header uses `assets/img/lattice-site.svg` as a desktop-only translucent background layer.
+- The shared header displays a non-linked Trinity College Dublin SVG logo from `assets/img/trinity-college-dublin-logo.svg` next to the site title. The top-right navigation has a `Search` link pointing to the archive page.
 - The browser tab icon uses `assets/img/site-thumbnail.svg`.
 - CSS, calendar JavaScript, and archive filter JavaScript asset URLs include a `?v={{ site.time | date: '%s' }}` cache-busting query string so GitHub Pages/browser caches pick up visual changes after each build.
 - Event content can be validated locally with `ruby scripts/validate_events.rb`. The script checks required front matter, filename/date consistency, optional tag/time formatting, missing local file attachments, missing local thumbnails, and missing rooms on future events.

@@ -216,6 +216,8 @@ time: "12:00"
 
 When present, `time` appears in the homepage Next Meetings panel for the immediate next meeting only.
 
+Thumbnail images in the homepage Next Meetings panel also appear only for the immediate next meeting. Do not show thumbnails beside the second or third upcoming meeting.
+
 The `additional_notes` field is optional. Use it for short scheduling notes in the homepage Next Meetings panel:
 
 ```yaml
@@ -224,7 +226,7 @@ additional_notes: "Bring printed notes."
 
 When present, `additional_notes` appears as `Notes: ...` for any event listed in the Next Meetings panel.
 
-The `thumbnail` field is optional. Use it for a custom-picked small figure beside the event in list views and near the top of the event page:
+The `thumbnail` field is optional. Use it for a custom-picked small figure beside archive rows, the immediate next meeting on the homepage, and near the top of the event page:
 
 ```yaml
 thumbnail:
@@ -260,7 +262,7 @@ Calendar, next-meetings, and archive entries link to the event page only when th
 
 Layouts are reusable page shells.
 
-- `_layouts/default.html` contains the shared HTML document structure, header logo, navigation, and stylesheet link.
+- `_layouts/default.html` contains the shared HTML document structure, header logo, site title, `Search` navigation link to the archive page, and stylesheet link.
 - `_layouts/event.html` controls how each individual meeting page looks.
 
 Event Markdown files automatically use the `event` layout because `_config.yml` sets that default for the `events` collection.
@@ -279,17 +281,25 @@ This file controls the visual design: layout, spacing, colors, calendar styling,
 
 This is the Trinity College Dublin logo displayed in the shared site header. It is shown as a non-linked image beside the site title.
 
+### `assets/img/circuit-site.svg`
+
+This is the decorative circuit image displayed on desktop inside the homepage intro box. It is shown as a translucent background layer behind the text and hidden on mobile.
+
+### `assets/img/lattice-site.svg`
+
+This is the decorative lattice image displayed on desktop inside the archive header box. It is shown as a translucent background layer behind the text and hidden on mobile.
+
 ### `assets/img/site-thumbnail.svg`
 
 This is the browser tab icon, also called the favicon. `_layouts/default.html` links to it from the page `<head>`.
 
 ### `assets/js/calendar.js`
 
-This file powers the interactive calendar.
+This file powers the interactive compact calendar strip.
 
-The homepage writes event data into `window.DQI_EVENTS`. The JavaScript reads that data, renders the current month, and updates the calendar when the previous, next, or today buttons are clicked.
+The homepage writes event data into `window.DQI_EVENTS`. The JavaScript reads that data, renders only the meeting dates in the current month, and updates the strip when the previous, next, or today buttons are clicked.
 
-Events without files or body notes are rendered as non-clickable calendar labels. Clickable calendar labels use a royal-blue pill style; non-clickable calendar labels are plain text with no background.
+Events without files or body notes are rendered as non-clickable labels. Clickable labels use a royal-blue pill style; non-clickable labels are plain text with no background.
 
 The homepage also includes a Google Calendar subscription notice that links to the external Google Calendar.
 
