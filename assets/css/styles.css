@@ -120,6 +120,13 @@ a:hover {
   font-weight: 700;
 }
 
+.event-speaker {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
 .archive-legend {
   display: flex;
   flex-wrap: wrap;
@@ -289,6 +296,10 @@ h3 {
 .event-row time {
   color: var(--muted);
   font-weight: 700;
+}
+
+.archive-year .event-row time {
+  color: #4169e1;
 }
 
 .calendar-header {
@@ -616,16 +627,26 @@ a.calendar-event:hover {
 
   .site-nav,
   .calendar-header {
-    align-items: flex-start;
+    align-items: center;
   }
 
   .site-nav {
-    justify-items: start;
+    justify-items: center;
+    text-align: center;
   }
 
   .site-logo {
     width: 180px;
     max-width: 80vw;
+  }
+
+  .event-media {
+    justify-items: center;
+  }
+
+  .event-thumbnail {
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .archive-year .event-list {
