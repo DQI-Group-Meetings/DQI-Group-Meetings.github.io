@@ -7,14 +7,43 @@
       });
   }
 
-  function transformCallout(blockquote) {
+  function markerFromTable(blockquote) {
+    var table = blockquote.firstElementChild;
+    if (!table || table.tagName !== "TABLE") {
+      return null;
+    }
+
+    var cells = table.querySelectorAll("td");
+    if (cells.length !== 2) {
+      return null;
+    }
+
+    return {
+      markerElement: table,
+      text: cells[0].textContent + "|" + cells[1].textContent
+    };
+  }
+
+  function markerFromParagraph(blockquote) {
     var firstParagraph = blockquote.querySelector("p");
     if (!firstParagraph) {
+      return null;
+    }
+
+    return {
+      markerElement: firstParagraph,
+      text: firstParagraph.textContent || ""
+    };
+  }
+
+  function transformCallout(blockquote) {
+    var marker = markerFromTable(blockquote) || markerFromParagraph(blockquote);
+    if (!marker) {
       return;
     }
 
     var markerPattern = /^\s*\[!([A-Za-z0-9_-]+)(?:\|([^\]]+))?\]\s*([^\n\r]*)\r?\n?/;
-    var firstText = firstParagraph.textContent || "";
+    var firstText = marker.text;
     var match = firstText.match(markerPattern);
     if (!match) {
       return;
@@ -25,9 +54,9 @@
     var title = match[3].trim() || titleFromType(calloutType);
     var highlight = metadata.match(/highlight-[A-Za-z0-9_-]+/);
 
-    firstParagraph.textContent = firstText.slice(match[0].length);
-    if (firstParagraph.textContent.trim() === "") {
-      firstParagraph.remove();
+    marker.markerElement.textContent = firstText.slice(match[0].length);
+    if (marker.markerElement.textContent.trim() === "") {
+      marker.markerElement.remove();
     }
 
     var titleElement = document.createElement("div");

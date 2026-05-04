@@ -581,6 +581,11 @@ a.calendar-event:hover {
   max-width: 720px;
 }
 
+.prose img {
+  max-width: 100%;
+  height: auto;
+}
+
 .obsidian-callout {
   --callout-color: 65, 105, 225;
   margin: 1rem 0;

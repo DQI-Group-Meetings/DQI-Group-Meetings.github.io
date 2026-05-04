@@ -60,7 +60,7 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 - The browser tab icon uses `assets/img/site-thumbnail.svg`.
 - CSS, calendar JavaScript, and archive filter JavaScript asset URLs include a `?v={{ site.time | date: '%s' }}` cache-busting query string so GitHub Pages/browser caches pick up visual changes after each build.
 - Obsidian-style callouts in Markdown are supported in Jekyll pages with `assets/js/obsidian-callouts.js` and matching CSS in `assets/css/styles.css`. Use the Obsidian-compatible syntax `> [!note|highlight-blue] Title` followed by quoted Markdown lines. Jekyll first renders this as a normal blockquote; the browser script converts matching blockquotes into styled `.obsidian-callout` blocks. The same syntax remains readable in plain Markdown and works in Obsidian.
-- The site layout loads MathJax v3 from jsDelivr so TeX inside event notes and converted Obsidian callouts can render in the browser.
+- The site layout loads MathJax v3 from jsDelivr so TeX inside event notes and converted Obsidian callouts can render in the browser. `_layouts/default.html` defines the quantum notation macros `\ket{}`, `\bra{}`, and `\braket{}{}`.
 - Event content can be validated locally with `ruby scripts/validate_events.rb`. The script checks required front matter, filename/date consistency, optional tag/time formatting, missing local file attachments, missing local thumbnails, and missing rooms on future events.
 
 ## Obsidian Callout Implementation Details
@@ -76,11 +76,11 @@ Use this Markdown form:
 
 Do not switch this to raw HTML `<div>` boxes. Raw HTML boxes break Obsidian Markdown/LaTeX rendering.
 
-Jekyll/Kramdown renders that syntax as a normal `<blockquote>` whose first paragraph starts with the literal text `[!note|highlight-blue] Title`. The client-side file `assets/js/obsidian-callouts.js` then:
+Jekyll/Kramdown usually renders that syntax as a normal `<blockquote>` whose first paragraph starts with the literal text `[!note|highlight-blue] Title`. It may also parse the `|` in the marker as a tiny two-cell table. The client-side file `assets/js/obsidian-callouts.js` handles both shapes and then:
 
 - finds every `blockquote`;
-- checks the first paragraph text against `/^\s*\[!([A-Za-z0-9_-]+)(?:\|([^\]]+))?\]\s*([^\n\r]*)\r?\n?/`;
-- removes the marker from the paragraph;
+- checks the first paragraph text, or the first two-cell table, against `/^\s*\[!([A-Za-z0-9_-]+)(?:\|([^\]]+))?\]\s*([^\n\r]*)\r?\n?/`;
+- removes the marker paragraph/table;
 - creates `.obsidian-callout-title` and `.obsidian-callout-content`;
 - adds classes such as `.obsidian-callout` and `.obsidian-highlight-blue`;
 - stores `data-callout` and `data-callout-metadata` for debugging.

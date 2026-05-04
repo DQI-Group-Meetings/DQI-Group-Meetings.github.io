@@ -327,7 +327,7 @@ Use this syntax in event Markdown:
 > Normal **Markdown** works here.
 ```
 
-This is still valid Markdown. Without JavaScript it appears as a normal blockquote, so the text remains readable. In the Jekyll site, the browser first receives a normal blockquote from Jekyll. Then `assets/js/obsidian-callouts.js` finds blockquotes whose first line starts with `[!...]` and converts them into styled callout boxes.
+This is still valid Markdown. Without JavaScript it appears as a normal blockquote, so the text remains readable. In the Jekyll site, the browser first receives a normal blockquote from Jekyll. Then `assets/js/obsidian-callouts.js` finds blockquotes whose first line starts with `[!...]` and converts them into styled callout boxes. If Kramdown parses the `|` in `[!note|highlight-blue]` as a tiny two-cell table, the script recognizes that shape as the callout marker too.
 
 The preferred syntax is:
 
@@ -370,7 +370,7 @@ If callouts become plain blockquotes, check that `assets/js/obsidian-callouts.js
 
 ### MathJax
 
-`_layouts/default.html` loads MathJax v3 from jsDelivr. This lets TeX expressions render in event notes, including inside converted Obsidian callouts.
+`_layouts/default.html` loads MathJax v3 from jsDelivr. This lets TeX expressions render in event notes, including inside converted Obsidian callouts. The layout also defines common quantum notation macros: `\ket{}`, `\bra{}`, and `\braket{}{}`.
 
 Inline math:
 
