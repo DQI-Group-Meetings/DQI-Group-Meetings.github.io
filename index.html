@@ -104,9 +104,14 @@ title: Calendar
         title: {{ event.title | jsonify }},
         speaker: {{ event.speaker | default: "" | jsonify }},
         date: "{{ event.date | date: '%Y-%m-%d' }}",
+        time: {{ event.time | default: "" | jsonify }},
+        room: {{ event.room | default: "" | jsonify }},
+        notes: {{ event.additional_notes | default: "" | jsonify }},
+        thumbnailHtml: {% capture thumbnail_html %}{% include event-thumbnail.html event=event %}{% endcapture %}{{ thumbnail_html | strip | jsonify }},
         url: {% if event_has_details %}"{{ event.url | relative_url }}"{% else %}null{% endif %}
       }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   ];
 </script>
+<script src="{{ '/assets/js/upcoming-meetings.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script src="{{ '/assets/js/calendar.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

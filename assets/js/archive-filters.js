@@ -1,4 +1,5 @@
 (function () {
+  const CURRENT_UTC_TIME_URL = "https://gettimeapi.dev/v1/time?timezone=UTC";
   const rows = Array.from(document.querySelectorAll(".event-row"));
   const sections = Array.from(document.querySelectorAll(".archive-year"));
   const tagButtons = Array.from(document.querySelectorAll(".tag-button"));
@@ -13,6 +14,51 @@
 
   if (!rows.length || !controls.search) {
     return;
+  }
+
+  function localTodayKey() {
+    const now = new Date();
+    return [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0")
+    ].join("-");
+  }
+
+  function timeoutController(milliseconds) {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), milliseconds);
+    return { controller, timeout };
+  }
+
+  async function currentGmtDateKey() {
+    const request = timeoutController(2500);
+
+    try {
+      const response = await fetch(CURRENT_UTC_TIME_URL, {
+        cache: "no-store",
+        signal: request.controller.signal
+      });
+
+      if (!response.ok) {
+        throw new Error(`Time API returned ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(data.date)) {
+        return data.date;
+      }
+
+      if (data.iso8601) {
+        return new Date(data.iso8601).toISOString().slice(0, 10);
+      }
+    } catch (error) {
+      console.warn("Falling back to the browser date for meeting status.", error);
+    } finally {
+      window.clearTimeout(request.timeout);
+    }
+
+    return localTodayKey();
   }
 
   function normalize(value) {
@@ -43,6 +89,17 @@
       .split("|")
       .map(normalize)
       .filter(Boolean);
+  }
+
+  function refreshStatuses(today) {
+    rows.forEach((row) => {
+      const time = row.querySelector("time[datetime]");
+      const eventDate = time ? time.getAttribute("datetime") : "";
+      const status = eventDate >= today ? "upcoming" : "past";
+
+      row.dataset.status = status;
+      row.classList.toggle("is-upcoming", status === "upcoming");
+    });
   }
 
   function rowMatches(row) {
@@ -124,5 +181,8 @@
     controls.search.focus();
   });
 
-  updateTagButtons();
+  currentGmtDateKey().then((today) => {
+    refreshStatuses(today);
+    updateSections();
+  });
 })();

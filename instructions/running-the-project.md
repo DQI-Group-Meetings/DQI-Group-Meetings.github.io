@@ -164,7 +164,9 @@ It shows:
 - The next upcoming meetings.
 - The interactive calendar.
 
-The page uses Liquid code to read all events from `site.events`, sort them by date, and pass event data into JavaScript.
+The page uses Liquid code to read all events from `site.events`, sort them by date, and pass event data into JavaScript. Liquid renders a build-time fallback for the next-meetings list, then `assets/js/upcoming-meetings.js` re-renders that list in the browser from the current GMT/UTC date so meetings move from upcoming to past without waiting for a GitHub Pages rebuild.
+
+The browser script first requests `https://gettimeapi.dev/v1/time?timezone=UTC`, which documents CORS support for browser GET requests. If that request fails, it falls back to the visitor's browser date.
 
 ### `archive.html`
 
@@ -307,7 +309,7 @@ The CSS, calendar JavaScript, and archive filter JavaScript links include a buil
 
 ### `assets/js/archive-filters.js`
 
-This file powers the archive filters. It populates the year dropdown from the rendered archive rows, applies search, select, and selected-tag filters, hides empty year sections, and shows a "No matching events" message when every event is filtered out.
+This file powers the archive filters. It first refreshes each archive row's `data-status` from the same GMT/UTC date source used by the homepage, then populates the year dropdown from the rendered archive rows, applies search, select, and selected-tag filters, hides empty year sections, and shows a "No matching events" message when every event is filtered out.
 
 ### `assets/js/obsidian-callouts.js`
 
