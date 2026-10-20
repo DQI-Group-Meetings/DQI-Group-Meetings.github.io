@@ -6,6 +6,7 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 
 - The site is deployed with GitHub Pages from the `main` branch and `/ (root)`.
 - Expected public URL: `https://dqi-group-meetings.github.io/`.
+- After making content, instruction, layout, style, or behavior changes, always run a local Jekyll server for testing before handoff when the environment permits it. Use `bundle exec jekyll serve --host 127.0.0.1` and report the local URL.
 - `_config.yml` sets:
   - `url: "https://dqi-group-meetings.github.io"`
   - `baseurl: ""`
@@ -47,7 +48,7 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 - The first Jekyll meeting calendar site has been pushed.
 - GitHub Pages settings have been configured through the repository settings UI.
 - The Pages build was observed running after configuration.
-- A previous meeting backlog was batch-converted into 45 event files from 2023-05-31 through 2025-11-24.
+- A previous meeting backlog was batch-converted into 43 event files from 2023-05-31 through 2025-11-24.
 - The import copied 23 local attachment files into `assets/files/YYYY-MM-DD/` and preserved 4 external presentation URLs.
 - Imported meeting rooms are stored in event front matter as `room` and rendered in the event header under the date.
 - Calendar, next-meetings, and archive entries are clickable only when the event has associated detail content: at least one `files` item or non-empty Markdown body notes. Events with only front matter render as plain text in lists. The homepage calendar is a compact monthly strip that shows only dates with meetings; clickable entries use a royal-blue pill style and non-clickable entries render as plain text with no background.

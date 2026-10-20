@@ -68,6 +68,12 @@ Start the local development server:
 bundle exec jekyll serve
 ```
 
+Maintainers and coding agents should run a local server after content, documentation, layout, style, or behavior changes whenever the environment permits it. A host-bound command that works well for local testing is:
+
+```bash
+bundle exec jekyll serve --host 127.0.0.1
+```
+
 Then open this URL in your browser:
 
 ```text
